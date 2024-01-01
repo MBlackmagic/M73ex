@@ -1,0 +1,26 @@
+import os
+
+def remove_m73_lines(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+        new_lines = [line for line in lines if 'M73' not in line]
+
+        with open(file_path, 'w') as file:
+            file.writelines(new_lines)
+
+    except Exception as e:
+        print(f"Fehler beim Bearbeiten der Datei {file_path}: {e}")
+
+def process_all_gcode_files(directory):
+    for filename in os.listdir(directory):
+        if filename.endswith('.gcode'):
+            file_path = os.path.join(directory, filename)
+            print(f"Editing {file_path}...")
+            remove_m73_lines(file_path)
+            print(f"Editing done for file: {file_path}")
+
+# Aktuelles Verzeichnis des Skripts
+current_directory = os.path.dirname(os.path.realpath(__file__))
+process_all_gcode_files(current_directory)
